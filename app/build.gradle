@@ -3,16 +3,16 @@ plugins {
 }
 
 android {
-    compileSdk 34
-    buildToolsVersion "34.0.0"
+    compileSdk 36
+
     namespace "io.github.tehcneko.telespeed"
 
     defaultConfig {
         applicationId "io.github.tehcneko.telespeed"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 34
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.1.0"
     }
 
     buildTypes {
@@ -26,6 +26,15 @@ android {
         buildConfig true
     }
 
+    // META-INF/xposed/* is the module manifest of the Modern Xposed API;
+    // merges wins over excludes so these files always get packaged.
+    packagingOptions {
+        resources {
+            merges += 'META-INF/xposed/*'
+            excludes += '**'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -35,5 +44,9 @@ android {
 }
 
 dependencies {
-    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'io.github.libxposed:api:102.0.0'
+    compileOnly 'androidx.annotation:annotation:1.9.1'
+    // 101.0.0 is the newest service build that allows compileSdk 36 (102.0.0 needs 37);
+    // it exposes the same XposedServiceHelper / getRemotePreferences surface we use.
+    implementation 'io.github.libxposed:service:101.0.0'
 }
